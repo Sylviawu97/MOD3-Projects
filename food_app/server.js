@@ -4,6 +4,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const Fruit = require('./Models/Fruit.js');
+const Veggie = require('./Models/Veggie.js');
 // now I can use process.env.VARIABLE_NAME
 // when my server starts, I want to connect to my database
 require('./config/database.js')
@@ -41,6 +42,38 @@ app.delete('/fruits/:idOfFruit', async (req, res) => {
     res.send(databaseResponse)
 })
 
+// Create a new Veggie
+app.post('/create_veggie', async (req, res) => {
+    try {
+      const veggie = await Veggie.create(req.body);
+      res.status(201).json(veggie);
+    } catch (error) {
+      res.status(500).json({ error: 'Failed to create veggie' });
+    }
+  });
+  
+  // Get all Veggies
+  app.get('/veggies', async (req, res) => {
+    try {
+      const veggies = await Veggie.find();
+      res.status(200).json(veggies);
+    } catch (error) {
+      res.status(500).json({ error: 'Failed to retrieve veggies' });
+    }
+  });
+  
+  // Get a specific Veggie by name
+  app.get('/veggie/:veggieName', async (req, res) => {
+    try {
+      const veggie = await Veggie.findOne({ name: req.params.veggieName });
+      if (!veggie) {
+        return res.status(404).json({ error: 'Veggie not found' });
+      }
+      res.status(200).json(veggie);
+    } catch (error) {
+      res.status(500).json({ error: 'Failed to retrieve veggie' });
+    }
+  });
 
 app.listen(4001, () => {
     console.log("listening on 4001")

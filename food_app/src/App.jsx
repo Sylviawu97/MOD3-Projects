@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-
+import Veggie from './components/Veggie';
 import './App.css'
 import axios from 'axios';
 
@@ -73,7 +73,7 @@ function App() {
       <section id="display-fruit">
         {fruitJSX}
       </section>
-
+      <Veggie/>
     </>
   )
 }
